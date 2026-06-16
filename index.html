@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="theme-color" content="#C62828">
+    <title>شبكه عبود</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <meta name="description" content="شبكة عبود اللاسلكية — سجّل دخولك واستمتع بالإنترنت السريع">
+    <link rel="stylesheet" href="css/style.min.css">
+</head>
+
+<body translate="no">
+
+    <!-- ═══════════════════════════════════════════
+         AUTO-LOGIN FROM SAVED COOKIE
+    ═══════════════════════════════════════════ -->
+    <script>
+        function gco() {
+            var username = "";
+            var speed = "";
+            var date = new Date();
+            date.setTime(date.getTime() + (5 * 1000));
+            var expires = date.toGMTString();
+            var SP = document.cookie.split(';');
+            for (var i = 0; i < SP.length; i++) {
+                var name_value = SP[i].trim();
+                if (name_value.indexOf("username=") === 0) {
+                    username = name_value.split('=')[1];
+                }
+                if (name_value.indexOf("speeded=") === 0) {
+                    speed = name_value.split('=')[1];
+                }
+                if (name_value.indexOf("error=") === 0) {
+                    return;
+                }
+            }
+            if (username !== "") {
+                document.cookie = 'error=1;expires=' + expires + '; path=/';
+                window.location.href = "$(link-login-only)" + '?username=' + encodeURIComponent(username) + "&speed=" + encodeURIComponent(speed);
+            }
+        }
+        gco();
+    </script>
+
+    <div class="page-wrapper">
+        <div class="page-inner">
+
+            <!-- ═══════════════════════════════════════════
+                 SITE HEADER
+            ═══════════════════════════════════════════ -->
+            <header class="site-header">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <img src="img/logo.svg" alt="شعار عبود نت">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">عبود نت</span>
+                        <span class="brand-tagline">شبكة لاسلكية محلية موثوقة</span>
+                    </div>
+                </div>
+                <div class="header-signal">
+                    <div class="signal-bars">
+                        <span class="s-bar s1"></span>
+                        <span class="s-bar s2"></span>
+                        <span class="s-bar s3"></span>
+                        <span class="s-bar s4"></span>
+                    </div>
+                    <span class="signal-lbl">متصل</span>
+                </div>
+            </header>
+
+            <!-- ═══════════════════════════════════════════
+                 MAIN CONTENT (id="login" — REQUIRED by JS)
+            ═══════════════════════════════════════════ -->
+            <main id="login" class="login main-content">
+
+                <!-- Welcome -->
+                <div class="welcome-wrap">
+                    <span class="welcome-tag">أهلاً وسهلاً</span>
+                    <h1 class="welcome-headline">سجّل دخولك<br>وابدأ التصفح</h1>
+                    <p class="welcome-sub">أدخل بيانات كرت الإنترنت للاتصال بالشبكة</p>
+                </div>
+                <!-- ═══════════════════════════════════════
+                     NEWS TICKER
+                ═══════════════════════════════════════ -->
+                <div class="ticker-wrap">
+                    <div class="ticker-label">إشعار</div>
+                    <div class="ticker-body">
+                        <p class="marquee">
+                            مرحبا بكم في شبكة عبود اللاسلكيه &nbsp;&nbsp;✦&nbsp;&nbsp; استخدم النت بما يرضي الله وتذكر مراقبة الله لك
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- ═══════════════════════════════════════
+                     LOGIN CARD — الأبرز والأهم في الصفحة
+                ═══════════════════════════════════════ -->
+                <div class="login-card">
+
+                    <!-- Card Header -->
+                    <div class="card-top">
+                        <div class="card-icon-wrap">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="card-title">تسجيل الدخول</p>
+                            <p class="card-sub">أدخل بيانات كرت الإنترنت</p>
+                        </div>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form name="login" onsubmit="return onLoginSubmitted()">
+
+                        <!-- MikroTik Required Fields -->
+                        <input type="hidden" name="dst" value="$(link-orig)" />
+                        <input type="hidden" name="popup" value="true" />
+
+                        <!-- Error Message -->
+                        <p class="error" style="margin-top:5px" id="error"></p>
+
+                        <!-- ─── Username Field ─── -->
+                        <div class="f-group">
+                            <label class="f-label" for="uname-field">رقم الكرت</label>
+                            <div class="f-input-wrap f-bord">
+                                <img class="login-icon f-icon" src="img/user.svg" alt="مستخدم">
+                                <input
+                                    id="uname-field"
+                                    class="login-input f-input"
+                                    name="username"
+                                    type="text"
+                                    value=""
+                                    placeholder="أدخل رقم الكرت هنا"
+                                    required
+                                    autocomplete="off"
+                                    to-lower
+                                    only-alphanumeric
+                                    username-field
+                                    rm-white-spaces
+                                    improve-input
+                                    to-arabic-numbers
+                                />
+                                <!-- #se — phone prefix selector (hotInImprover.min.js) -->
+                                <select id="se" name=""></select>
+                            </div>
+                        </div>
+
+                        <!-- ─── Speed Field ─── -->
+                        <div class="f-group">
+                            <label class="f-label" for="speed">سرعة الاتصال</label>
+                            <div class="f-input-wrap f-input-wrap--select">
+                                <svg class="f-speed-icon" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                </svg>
+                                <select class="login-input f-input f-select" id="speed" name="speed" speed-field>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08222" selected disabled hidden>اختر سرعة الإنترنت</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08555">512 كيلوبايت — اقتصادية</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08444">1 ميجابايت — عادية</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08333">2 ميجابايت — متوسطة</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08222">4 ميجابايت — عالية</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08111">8 ميجابايت — عالية جداً</option>
+                                    <option value="55987b0d-ca6d-464f-93c8-db9ac4a08000">16 ميجابايت — لامحدودة</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Toggle (required by JS — kept invisible) -->
+                        <div class="togswith" style="display:none">
+                            <div class="btnu">
+                                <div>
+                                    <div><h3>ايقاف التحديثات</h3></div>
+                                    <div class="switch">
+                                        <input id="chupdate" value="" class="check-toggle check-toggle-round-flat" type="checkbox">
+                                        <label for="chupdate"></label>
+                                        <span class="on">لا</span>
+                                        <span class="off">نعم</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden Password (required by MikroTik) -->
+                        <label>
+                            <input name="password" type="hidden" placeholder="كلمة المرور" />
+                        </label>
+
+                        <!-- ─── LOGIN BUTTON ─── -->
+                        <!-- login-submit class + enable-hot-cookie attr REQUIRED by main.min.js -->
+                        <button type="button" class="login-submit btn-login" id="login-btn" enable-hot-cookie>
+                            دخول إلى الإنترنت
+                            <img class="icon" src="img/nl.png" alt="">
+                        </button>
+
+                    </form>
+                </div>
+                <!-- /login-card -->
+
+                <!-- ═══════════════════════════════════════
+                     QUICK ACTIONS
+                ═══════════════════════════════════════ -->
+                <!-- parent-id attribute REQUIRED by main.min.js to show panels -->
+                <div class="quick-actions">
+                    <button class="qa-btn" parent-id="price" id="btn-prices">
+                        <div class="qa-icon" style="--ic-bg:#fc8829;--ic-color:#E65100">
+                            <img src="img/d.svg" alt="أسعار" width="22" height="22">
+                        </div>
+                        <span>الأسعار</span>
+                    </button>
+                    <button class="qa-btn" parent-id="sell-point" id="btn-sellpoint">
+                        <div class="qa-icon" style="--ic-bg:#970d00;--ic-color:#2E7D32">
+                            <img src="img/l.svg" alt="نقاط بيع" width="22" height="22">
+                        </div>
+                        <span>نقاط البيع</span>
+                    </button>
+                    <button class="qa-btn" parent-id="info" id="btn-info">
+                        <div class="qa-icon" style="--ic-bg:#1189df;--ic-color:#1565C0">
+                            <img src="img/i.svg" alt="تعليمات" width="22" height="22">
+                        </div>
+                        <span>تعليمات</span>
+                    </button>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                     QURAN LINK
+                ═══════════════════════════════════════ -->
+             
+                <!-- <a class="quran-strip"
+                   href="https://www.tvquran.com/"
+                   target="_blank"
+                   onclick="alert('نرجو الدعاء لي ولوالدي بظهر الغيب');">
+                    <span class="qs-icon">📖</span>
+                    <span class="qs-text">القرآن الكريم — متاح مجاناً</span>
+                    <span class="qs-arr">←</span>
+                </a> -->
+
+                <!-- ═══════════════════════════════════════
+                     ADS SLIDER (hidden until JS loads images)
+                ═══════════════════════════════════════ -->
+                <div class="adds">
+                    <div class="addcont">
+                        <div style="transition: margin-right 1s;" class="addimg"></div>
+                        <div class="addimg"></div>
+                        <div class="addimg"></div>
+                        <div class="addimg"></div>
+                        <div class="addimg"></div>
+                    </div>
+                    <button type="button" id="left"></button>
+                    <button type="button" id="right"></button>
+                    <p id="wrn">اضغط لفتح الصورة<br><br>اسحب للتمرير</p>
+                </div>
+
+                <!-- Fullscreen Ad Overlay (position:fixed — outside scroll flow) -->
+                <div class="oflowimg">
+                    <button type="button" class="closs">إغلاق</button>
+                    <img id="flowimg" alt="">
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                     FEATURES GRID
+                ═══════════════════════════════════════ -->
+                <div class="features-grid">
+                    <div class="feat-item">
+                        <span class="feat-emoji">📶</span>
+                        <div class="feat-txt">
+                            <b>تغطية واسعة</b>
+                            <span>شبكة قوية ومستقرة</span>
+                        </div>
+                    </div>
+                    <div class="feat-item">
+                        <span class="feat-emoji">⚡</span>
+                        <div class="feat-txt">
+                            <b>سرعة فائقة</b>
+                            <span>حتى 16 ميجابايت</span>
+                        </div>
+                    </div>
+                    <div class="feat-item">
+                        <span class="feat-emoji">🕐</span>
+                        <div class="feat-txt">
+                            <b>خدمة دائمة</b>
+                            <span>دعم على مدار الساعة</span>
+                        </div>
+                    </div>
+                    <div class="feat-item">
+                        <span class="feat-emoji">💳</span>
+                        <div class="feat-txt">
+                            <b>باقات متنوعة</b>
+                            <span>تناسب جميع الاحتياجات</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════
+                     CONTACT CARD
+                ═══════════════════════════════════════ -->
+                <div class="contact-card">
+                    <img src="img/robot.png" class="contact-robot" alt="خدمة العملاء">
+                    <div class="contact-body">
+                        <p class="contact-t">تحتاج مساعدة؟</p>
+                        <p class="contact-s">فريقنا جاهز لمساعدتك</p>
+                        <div class="contact-btns">
+                            <a href="sms:+967771486072" class="c-btn c-call" id="main-call">
+                                <img src="img/c.svg" alt="اتصال"> اتصال
+                            </a>
+                            <a href="https://wa.me/967771486072" class="c-btn c-wa" id="main-wa">
+                                <img src="img/w.svg" alt="واتساب"> واتساب
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="pg-footer">
+                    <p>© 2026 م.احمد عبده الشجيفي - جميع الحقوق محفوظه
+                    </p>
+                </footer>
+
+            </main>
+            <!-- /main#login -->
+
+
+            <!-- ═══════════════════════════════════════════════════════
+                 PANEL: PRICES (#price)
+            ═══════════════════════════════════════════════════════ -->
+            <div class="app" id="price">
+                <div class="pnl-head">
+                    <h2 class="pnl-title">
+                        <span>💰</span> الباقات والأسعار
+                    </h2>
+                    <!-- app-logout class REQUIRED by main.min.js to close panel -->
+                    <button class="pnl-close app-logout" id="close-price" aria-label="إغلاق">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="pnl-body">
+
+                    <div class="price-grid">
+
+                        <div class="p-card">
+                            <span class="p-tag">يومية</span>
+                            <div class="p-amount">200<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> 5 ساعات</li>
+                                <li><span>📦</span> 1500 ميجابايت</li>
+                                <li><span>📅</span> 3 أيام صلاحية</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-card">
+                            <span class="p-tag">أسبوعية</span>
+                            <div class="p-amount">500<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> 48 ساعة</li>
+                                <li><span>📦</span> 3200 ميجا</li>
+                                <li><span>📅</span> أسبوع</li>
+                            </ul>
+                        </div>
+
+                        <!-- Most Popular -->
+                        <div class="p-card p-card--pop">
+                            <span class="p-tag p-popular">الأكثر طلباً</span>
+                            <div class="p-amount">1000<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> 60 ساعة</li>
+                                <li><span>📦</span> 6400 ميجا</li>
+                                <li><span>📅</span> أسبوع</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-card">
+                            <span class="p-tag">شهرية</span>
+                            <div class="p-amount">3000<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> شهر كامل</li>
+                                <li><span>📦</span> 20 جيجابايت</li>
+                                <li><span>📅</span> شهر</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-card">
+                            <span class="p-tag">شهرية+</span>
+                            <div class="p-amount">5000<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> شهر كامل</li>
+                                <li><span>📦</span> 40 جيجابايت</li>
+                                <li><span>📅</span> شهر</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-card">
+                            <span class="p-tag p-tag--prem">بريميوم</span>
+                            <div class="p-amount">10000<small>ريال</small></div>
+                            <ul class="p-specs">
+                                <li><span>⏱</span> شهر كامل</li>
+                                <li><span>📦</span> 80 جيجابايت</li>
+                                <li><span>📅</span> شهر</li>
+                            </ul>
+                        </div>
+
+                        <!-- Custom Plan — Full Width -->
+                        <div class="p-card p-card--custom">
+                            <div>
+                                <span class="p-tag">مخصصة</span>
+                                <div class="p-amount" style="font-size:20px; line-height:1.3;">حسب<br>الطلب</div>
+                            </div>
+                            <ul class="p-specs">
+                                <li><span>📦</span> حسب احتياجك تماماً</li>
+                                <li><span>📅</span> مدة شهر</li>
+                                <li><span>📞</span> تواصل معنا</li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <!-- app-logout + app-submit classes REQUIRED by JS -->
+                    <div class="app-logout app-submit pnl-back-btn">← رجوع</div>
+
+                </div>
+            </div>
+
+
+            <!-- ═══════════════════════════════════════════════════════
+                 PANEL: SELL POINTS (#sell-point)
+            ═══════════════════════════════════════════════════════ -->
+            <div class="app" id="sell-point">
+                <div class="pnl-head">
+                    <h2 class="pnl-title">
+                        <span>📍</span> نقاط البيع
+                    </h2>
+                    <button class="pnl-close app-logout" id="close-sp" aria-label="إغلاق">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="pnl-body">
+                    <p class="pnl-intro">اشترِ كرت الإنترنت من أقرب نقطة بيع في منطقتك</p>
+
+                    <div class="sp-list">
+                        <div class="sp-item"><span class="sp-ic">🏪</span>جميع البقالات المحيطه بالشبكه</div>
+                    </div>
+
+                    <div class="app-logout app-submit pnl-back-btn">← رجوع</div>
+
+                </div>
+            </div>
+
+
+            <!-- ═══════════════════════════════════════════════════════
+                 PANEL: INFO / TIPS (#info)
+            ═══════════════════════════════════════════════════════ -->
+            <div class="app" id="info">
+                <div class="pnl-head">
+                    <h2 class="pnl-title">
+                        <span>💡</span> نصائح توفير الرصيد
+                    </h2>
+                    <button class="pnl-close app-logout" id="close-info" aria-label="إغلاق">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="pnl-body">
+
+                    <div class="tip-card">
+                        <div class="tip-num">1</div>
+                        <div class="tip-body">
+                            <strong>أوقف التحديثات التلقائية</strong>
+                            <p>قم بتعطيل التحديثات التلقائية في هاتفك لتجنب استهلاك الرصيد بشكل غير مقصود.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-num">2</div>
+                        <div class="tip-body">
+                            <strong>استخدم Facebook Lite</strong>
+                            <p>تطبيق <span class="hl-blue">Facebook الأزرق</span> يستهلك بيانات كثيرة جداً. استبدله بـ <span class="hl-gray">Facebook Lite</span> لاستهلاك أقل بكثير.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-num">3</div>
+                        <div class="tip-body">
+                            <strong>تحكّم في جودة يوتيوب</strong>
+                            <p>يوتيوب يرفع جودة الفيديو تلقائياً مما <span class="hl-red">يستهلك رصيدك بسرعة</span>. غيّر الجودة يدوياً إلى 360p أو 480p لتوفير البيانات.</p>
+                        </div>
+                    </div>
+
+                    <div class="tip-card">
+                        <div class="tip-num">4</div>
+                        <div class="tip-body">
+                            <strong>أغلق التحميل التلقائي للملفات</strong>
+                            <p>افتح الإعدادات في هذه التطبيقات وأوقف التحميل التلقائي للصور والفيديوهات:</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Google Play</span>
+                                <span class="app-tag">WhatsApp</span>
+                                <span class="app-tag">Facebook</span>
+                                <span class="app-tag">Telegram</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="app-logout app-submit pnl-back-btn">← رجوع</div>
+
+                </div>
+            </div>
+
+
+            <!-- ═══════════════════════════════════════════════════════
+                 PANEL: STATUS (#status) — shown after successful login
+            ═══════════════════════════════════════════════════════ -->
+            <div class="app" id="status">
+                <div class="pnl-head status-pnl-head">
+                    <div class="status-ok-icon">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <!-- netname class REQUIRED by main.min.js -->
+                        <h1 class="netname">شبكة عبود نت</h1>
+                        <p class="pnl-title" style="font-size:15px; color:#2E7D32;">تم تسجيل الدخول بنجاح ✓</p>
+                    </div>
+                </div>
+                <div class="pnl-body">
+
+                    <p style="text-align:center; margin-bottom:18px;">
+                        <!-- link to status.html if auto-redirect fails -->
+                        <a class="reconnect-link" href="status.html">إذا لم يتم الاتصال تلقائياً — اضغط هنا</a>
+                    </p>
+
+                    <!-- Session Data Cards -->
+                    <!-- IDs: username, remain_bytes_total, session_time_left, bytes_out, sps, sup — REQUIRED by main.min.js -->
+                    <div class="session-grid">
+                        <div class="s-card">
+                            <span class="s-emoji">👤</span>
+                            <span class="s-lbl">اسم المستخدم</span>
+                            <span class="s-val" id="username">—</span>
+                        </div>
+                        <div class="s-card">
+                            <span class="s-emoji">📦</span>
+                            <span class="s-lbl">الرصيد المتبقي</span>
+                            <span class="s-val" id="remain_bytes_total">غير محدود</span>
+                        </div>
+                        <div class="s-card">
+                            <span class="s-emoji">⏱</span>
+                            <span class="s-lbl">الوقت المتبقي</span>
+                            <span class="s-val" id="session_time_left">غير محدود</span>
+                        </div>
+                        <div class="s-card">
+                            <span class="s-emoji">📊</span>
+                            <span class="s-lbl">الاستهلاك</span>
+                            <span class="s-val" id="bytes_out">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Hidden data elements (required by main.min.js) -->
+                    <div style="display:none;" class="data">
+                        <span>سرعة الكرت</span>
+                        <span id="sps">متوسطة</span>
+                    </div>
+                    <div style="display:none;" class="data">
+                        <span>التحديثات</span>
+                        <span id="sup">مفعّلة</span>
+                    </div>
+
+                    <!-- Logout Button -->
+                    <!-- logout-submit + erase-cookie + clear-hot-cookie — REQUIRED by main.min.js -->
+                    <button class="logout-btn logout-submit app-submit" id="logout-btn" erase-cookie clear-hot-cookie>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
+                        </svg>
+                        تسجيل الخروج
+                    </button>
+
+                    <!-- Contact -->
+                    <div class="contact-btns" style="justify-content:center; margin:16px 0 10px;">
+                        <a href="tel:+967771486072" class="c-btn c-call" id="status-call">
+                            <img src="img/c.svg" alt="اتصال"> اتصال
+                        </a>
+                        <a href="https://wa.me/967771486072" class="c-btn c-wa" id="status-wa">
+                            <img src="img/w.svg" alt="واتساب"> واتساب
+                        </a>
+                    </div>
+                    <p class="support-num">خدمة العملاء: 771486072</p>
+
+                </div>
+            </div>
+
+
+            <!-- ═══════════════════════════════════════════════════════
+                 PANEL: BLOCK (#block) — shown when user is blocked
+            ═══════════════════════════════════════════════════════ -->
+            <div class="app" id="block">
+                <div class="pnl-head block-pnl-head">
+                    <div class="block-icon-wrap">
+                        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M15 9l-6 6M9 9l6 6"/>
+                        </svg>
+                    </div>
+                    <h2 class="block-t">تم تعليق الوصول مؤقتاً</h2>
+                    <p class="block-s">محاولات تسجيل دخول خاطئة متعددة</p>
+                </div>
+                <div class="pnl-body">
+
+                    <div class="countdown-box">
+                        <p class="cd-lbl">يُرفع الحظر تلقائياً بعد</p>
+                        <!-- count-down-span attribute — JS updates this element -->
+                        <span class="cd-timer" count-down-span></span>
+                    </div>
+
+                    <p class="block-hint">هل تحتاج مساعدة؟ تواصل مع خدمة العملاء</p>
+
+                    <div class="contact-btns" style="justify-content:center; margin-top:16px;">
+                        <a href="tel:+967771486072" class="c-btn c-call" id="block-call">
+                            <img src="img/c.svg" alt="اتصال"> اتصال
+                        </a>
+                        <a href="https://wa.me/967771486072" class="c-btn c-wa" id="block-wa">
+                            <img src="img/w.svg" alt="واتساب"> واتساب
+                        </a>
+                    </div>
+
+                    <div style="text-align:center; margin-top:24px;">
+                        <p style="font-size:12px; color:var(--txt-4);">رقم خدمة العملاء: 771486072</p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div><!-- /page-inner -->
+    </div><!-- /page-wrapper -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         JAVASCRIPT FILES — ORDER AND ATTRIBUTES ARE CRITICAL
+         DO NOT CHANGE
+    ═══════════════════════════════════════════════════════════ -->
+    <script src="js/hotInImprover.min.js"></script>
+    <script src="js/hotCookie.min.js"></script>
+    <script src="js/hotBlocker.min.js" enable-hot-blocker try-count="10" block-time="1"></script>
+    <script src="js/main.min.js" link-login-only="$(link-login-only)"></script>
+
+</body>
+</html>
